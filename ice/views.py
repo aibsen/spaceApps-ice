@@ -8,3 +8,8 @@ def index(request):
     return render(request, 'index.html')
 
 # Create your views here.
+def north(request):
+    return render(request, 'north.html')
+
+def south(request):
+    return render(request, 'south.html')
