@@ -14,3 +14,8 @@ def index(request):
 
 
 # Create your views here.
+def north(request):
+    return render(request, 'north.html')
+
+def south(request):
+    return render(request, 'south.html')
