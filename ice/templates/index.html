@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css" type="text/css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
@@ -10,32 +10,36 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <title>Icy Polar Opposites</title>
-  </head>
+</head>
 
-  <body>
-    <div class="container-fluid">
-      <div class="row"><div class="col-md-12"><h2>Icy Polar Opposites</h2></div></div>
-      <div class="row">
-        <div class="col-lg-6">
-          <h3>South Pole</h3>
-          <div id="map-south" class="map"></div>
-        </div>
-      <div class="col-lg-6">
-        <h3>North Pole</h3>
-        <div id="map-north" class="map"></div>
-      </div>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12"><h2>Icy Polar Opposites</h2></div>
     </div>
     <div class="row">
-      <div class="col-md-12">
-        <p>
-          <label for="year">Year selected:</label>
-          <input type="text" id="year" readonly style="padding-top: 20px;border:0; color:#f6931f; font-weight:bold;">
-        </p>
-      <div id="slider-range-min"></div></div>
+        <div class="col-lg-6">
+            <h3>South Pole</h3>
+            <div id="map-south" class="map"></div>
+        </div>
+        <div class="col-lg-6">
+            <h3>North Pole</h3>
+            <div id="map-north" class="map"></div>
+        </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                <label for="year">Year selected:</label>
+                <input type="text" id="year" readonly
+                       style="padding-top: 20px;border:0; color:#f6931f; font-weight:bold;">
+            </p>
+            <div id="slider-range-min"></div>
+        </div>
     </div>
+</div>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     // var pointcoo =ol.proj.fromLonLat([302, 83])
     // console.log(pointcoo)
@@ -81,9 +85,6 @@
     //       });
 
 
-
-
-
     var mapNorth = new ol.Map({
         view: new ol.View({
             maxResolution: 8192.0,
@@ -124,10 +125,6 @@
     mapNorth.addLayer(layerNorth);
 
 
-
-
-
-
     var mapSouth = new ol.Map({
         view: new ol.View({
             maxResolution: 8192.0,
@@ -165,42 +162,33 @@
 
     var layerSouth = new ol.layer.Tile({source: sourceSouth});
 
-mapSouth.addLayer(layerSouth);
+    mapSouth.addLayer(layerSouth);
 
-var sliderValue = null;
-var now = new Date();
-$( function() {
-  $( "#slider-range-min" ).slider({
-    range: "min",
-    value: 2000,
-    min: 2000,
-    max: now.getYear()+1900,
-    slide: function( event, ui ) {
-      $( "#year" ).val( ui.value );
-      sliderValue = ui.value;
-      console.log(sliderValue);
-      sourceSouth.set('url', "//map1{a-c}.vis.earthdata.nasa.gov/wmts-antarctic/wmts.cgi?TIME="+sliderValue+"-12-01");
-      sourceNorth.set('url', "//map1{a-c}.vis.earthdata.nasa.gov/wmts-arctic/wmts.cgi?TIME="+sliderValue+"-06-15");
-      // layerSouth.refresh({force:true});
-      // layerNorth.refresh({force:true});
-      mapSouth.removeLayer(layerSouth);
-      var layerSouth = new ol.layer.Tile({source: sourceSouth});
-      mapSouth.addLayer(layerSouth);
-      mapNorth.removeLayer(layerNorth);
-      console.log(sourceNorth.get('url'));
-      var layerNorth = new ol.layer.Tile({source: sourceNorth});
-      mapNorth.addLayer(layerNorth);
-      // mapNorth.render();
-
-    }
-  });
-  $( "#year" ).val( " " +$( "#slider-range-min" ).slider( "value" ) );
-});
+    var sliderValue = null;
+    var now = new Date();
+    $(function () {
+        $("#slider-range-min").slider({
+            range: "min",
+            value: 2000,
+            min: 2000,
+            max: now.getYear() + 1900,
+            slide: function (event, ui) {
+                $("#year").val(ui.value);
+                sliderValue = ui.value;
+                console.log(sliderValue);
+                sourceSouth.setUrl("//map1{a-c}.vis.earthdata.nasa.gov/wmts-antarctic/wmts.cgi?TIME=" + sliderValue + "-06-15");
+                sourceSouth.refresh()
+                sourceNorth.setUrl("//map1{a-c}.vis.earthdata.nasa.gov/wmts-arctic/wmts.cgi?TIME=" + sliderValue + "-06-15");
+                sourceNorth.refresh()
+            }
+        });
+        $("#year").val(" " + $("#slider-range-min").slider("value"));
+    });
 
 
-var url = (function(sliderValue){
-  return sliderValue;
-});
-    </script>
-  </body>
+    var url = (function (sliderValue) {
+        return sliderValue;
+    });
+</script>
+</body>
 </html>
