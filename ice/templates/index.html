@@ -4,23 +4,54 @@
     <link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css" type="text/css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-<script src="https://openlayers.org/en/v4.1.0/build/ol.js" type="text/javascript"></script>
+    <script src="https://openlayers.org/en/v4.1.0/build/ol.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <title>Icy Polar Opposites</title>
   </head>
+
   <body>
     <div class="container-fluid">
       <div class="row"><div class="col-md-12"><h2>Icy Polar Opposites</h2></div></div>
       <div class="row">
         <div class="col-lg-6">
+          <h3>South Pole</h3>
           <div id="map-south" class="map"></div>
         </div>
       <div class="col-lg-6">
+        <h3>North Pole</h3>
         <div id="map-north" class="map"></div>
       </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p>
+          <label for="year">Year selected:</label>
+          <input type="text" id="year" readonly style="padding-top: 20px;border:0; color:#f6931f; font-weight:bold;">
+        </p>
+      <div id="slider-range-min"></div></div>
     </div>
     </div>
 
     <script type="text/javascript">
+    var now = new Date();
+    console.log(now.getYear());
+    $( function() {
+      $( "#slider-range-min" ).slider({
+        range: "min",
+        value: 2000,
+        min: 2000,
+        max: now.getYear()+1900,
+        slide: function( event, ui ) {
+          $( "#year" ).val( ui.value );
+        }
+      });
+      $( "#year" ).val( " " +$( "#slider-range-min" ).slider( "value" ) );
+    });
+
     var vector = new ol.layer.Vector({
       source: new ol.source.Vector({
         url: 'https://firms.modaps.eosdis.nasa.gov/active_fire/c6/kml/MODIS_C6_South_America_24h.kml',
