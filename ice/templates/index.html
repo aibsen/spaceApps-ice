@@ -38,7 +38,6 @@
 
     <script type="text/javascript">
     var now = new Date();
-    console.log(now.getYear());
     $( function() {
       $( "#slider-range-min" ).slider({
         range: "min",
@@ -52,12 +51,48 @@
       $( "#year" ).val( " " +$( "#slider-range-min" ).slider( "value" ) );
     });
 
-    var vector = new ol.layer.Vector({
-      source: new ol.source.Vector({
-        url: 'https://firms.modaps.eosdis.nasa.gov/active_fire/c6/kml/MODIS_C6_South_America_24h.kml',
-        format: new ol.format.KML()
-        })
-      });
+    var pointcoo =ol.proj.fromLonLat([302, 83])
+    console.log(pointcoo)
+
+      var geojsonObject = {
+        'type': 'FeatureCollection',
+        'features': [
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Polygon',
+              'coordinates': [[[302.947372,83.394029], [303.262088,83.446553], [304.216108,83.580334]]]
+            }
+          },
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': [302, 83]
+            }
+          }]
+        };
+
+
+
+        var vector = new ol.layer.Vector({
+          source: new ol.source.Vector({
+            features: (new ol.format.GeoJSON()).readFeatures(geojsonObject,{
+              featureProjection: 'EPSG:3857'
+            }),
+            format: new ol.format.GeoJSON(),
+          }),
+          style: new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: 'blue',
+              width: 3
+            }),
+            fill: new ol.style.Fill({
+              color: 'rgba(0, 0, 255, 0.1)'
+            })
+          })
+
+          });
 
       var mapSouth = new ol.Map({
         target: 'map-south',
